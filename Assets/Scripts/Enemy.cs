@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour {
 
 	void Start () {
         transform.localPosition = new Vector2(Random.Range(-Screen.width / 2, Screen.width / 2), Random.Range(-Screen.height / 2, Screen.height / 2));
-        
     }
 	
 	void Update () {
