@@ -18,48 +18,56 @@ public class Player : MonoBehaviour
     public float accelerationX;
     public float accelerationY;
 
+    /// <summary>
+    /// When it gets lower, the player speed gets higher
+    /// </summary>
+    float speedDivider = 400;
+
+    float speed = 12;
+
 
     void Start()
     {
         transform.eulerAngles = new Vector3(0, 0, 0);
+        speed = Screen.width / speedDivider;
         control = GameObject.Find("GameControlObject").GetComponent<GameControlScript>();
     }
 
     void Update()
     {
-        if (Input.acceleration.x != 0)
+        if (Mathf.Abs(Input.acceleration.x) > 0 && Mathf.Abs(Input.acceleration.x) < 0.6f)
         {
-            accelerationX = Input.acceleration.x * Time.deltaTime * 500;
+            accelerationX = Input.acceleration.x * Time.deltaTime * Screen.width;
         }
 
-        if (Input.acceleration.y != 0)
+        if (Mathf.Abs(Input.acceleration.y) > 0 && Mathf.Abs(Input.acceleration.y) < 0.6f)
         {
-            accelerationY = Input.acceleration.y * Time.deltaTime * 500;
+            accelerationY = Input.acceleration.y * Time.deltaTime * Screen.width;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            accelerationX = -12;
+            accelerationX = -speed;
             accelerationY = 0;
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            accelerationX = 12;
+            accelerationX = speed;
             accelerationY = 0;
         }
 
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            accelerationY = 12;
+            accelerationY = speed;
             accelerationX = 0;
         }
 
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            accelerationY = -12;
+            accelerationY = -speed;
             accelerationX = 0;
         }
 

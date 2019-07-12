@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-
     public float lifetime;
     public float touchX;
     public float touchY;
 
     void Start()
     {
-        
+
     }
     void Update()
     {
@@ -28,7 +27,6 @@ public class Bomb : MonoBehaviour
             touchY = touch.position.y;
         }
 
-
-
+        transform.localScale = Vector3.one;
     }
 }
