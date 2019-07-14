@@ -14,7 +14,7 @@ public class Enemy2 : MonoBehaviour
         transform.localPosition = new Vector2(Random.Range(-Screen.width / 2, Screen.width / 2), Random.Range(-Screen.height / 2, Screen.height / 2));
     }
 
-    void Update()
+    void FixedUpdate()
     {
 
         timer += Time.deltaTime; 

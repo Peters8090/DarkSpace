@@ -5,13 +5,9 @@ using UnityEngine.UI;
 
 public class Scores : MonoBehaviour {
 
-    private float timer;
+    private float timer = 0;
     private float highscore;
     
-	void Start () {
-
-	}
-	
 	void Update () {
         timer = GameObject.Find("GameControlObject").GetComponent<GameControlScript>().timer;
         timer = Mathf.Round(timer * 100f) / 100f;

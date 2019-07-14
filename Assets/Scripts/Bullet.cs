@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// When it gets lower, the bullet speed gets higher
     /// </summary>
-    float speedDivider = 250;
+    float speedDivider = 250f;
 
     void Start()
     {
@@ -24,7 +24,8 @@ public class Bullet : MonoBehaviour
         if (GameObject.FindGameObjectsWithTag("Player").Length > 0)
         {
             transform.LookAt(GameObject.Find("Player").transform);
-            transform.Translate(transform.forward * Screen.width / 400);
+            transform.Translate(transform.forward * Screen.width / speedDivider);
+            transform.localEulerAngles = new Vector3(0, 0, transform.localEulerAngles.z);
         }
         
         transform.localScale = Vector3.one;
@@ -36,8 +37,11 @@ public class Bullet : MonoBehaviour
         {
             PlayerPrefs.SetString("previousScene", SceneManager.GetActiveScene().buildIndex.ToString());
             GameObject.Find("Canvas").GetComponent<Lose>().enabled = true;
+
+            if(control != null)
+                control.gameOver = true;
+
             Destroy(coll.gameObject);
-            control.gameOver = true;
             Destroy(gameObject);
         }
     }

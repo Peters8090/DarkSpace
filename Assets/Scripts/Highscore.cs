@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class Highscore : MonoBehaviour {
 
+    Text myText;
+
 	void Start () {
-		
+        myText = GetComponent<Text>();
 	}
 
 	void Update () {
-        GetComponent<Text>().text = PlayerPrefs.GetFloat("highscore", 0).ToString();
+        if (PlayerPrefs.HasKey("highscore"))
+            myText.text = PlayerPrefs.GetFloat("highscore", 0).ToString();
+        else
+            myText.text = "NaN";
 	}
 }

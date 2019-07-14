@@ -25,7 +25,13 @@ public class Player : MonoBehaviour
 
     float speed = 12;
 
+    float timer = 0;
 
+    Vector3 targetRot = Vector3.zero;
+
+    float smoothSpeed = 5f;
+
+    bool noMovement = false;
     void Start()
     {
         transform.eulerAngles = new Vector3(0, 0, 0);
@@ -35,13 +41,20 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Mathf.Abs(Input.acceleration.x) > 0 && Mathf.Abs(Input.acceleration.x) < 0.6f)
+        if (Mathf.Abs(Input.acceleration.x) > 0 && Mathf.Abs(Input.acceleration.x) > 0.08f)
         {
+            timer = 0;
             accelerationX = Input.acceleration.x * Time.deltaTime * Screen.width;
         }
-
-        if (Mathf.Abs(Input.acceleration.y) > 0 && Mathf.Abs(Input.acceleration.y) < 0.6f)
+        else
         {
+            noMovement = true;
+        }
+
+        if (Mathf.Abs(Input.acceleration.y) > 0 && Mathf.Abs(Input.acceleration.y) > 0.08f)
+        {
+            timer = 0;
+            noMovement = false;
             accelerationY = Input.acceleration.y * Time.deltaTime * Screen.width;
         }
 
@@ -70,13 +83,27 @@ public class Player : MonoBehaviour
             accelerationY = -speed;
             accelerationX = 0;
         }
+       
+        if(noMovement)
+        {
+            timer += Time.deltaTime;
+        }
 
+        if(timer > 0.5f)
+        {
+            accelerationX = 0;
+            accelerationY = 0;
+        }
 
-        transform.eulerAngles = new Vector3(0, 0);
+        if (accelerationX != 0 && accelerationY != 0)
+        {
+            transform.localEulerAngles = Vector3.zero;
+        }
 
         if (transform.localPosition.x <= Screen.width / 2 && transform.localPosition.x >= -(Screen.width / 2) && transform.localPosition.y <= Screen.height / 2 && transform.localPosition.y >= -(Screen.height / 2))
         {
             transform.Translate(accelerationX, accelerationY, 0f);
+            //transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(accelerationX + transform.localPosition.x, accelerationY + transform.localPosition.y, 0f), smoothSpeed);
         }
 
         else if (transform.localPosition.x < Screen.width / 2)
@@ -106,12 +133,18 @@ public class Player : MonoBehaviour
 
             touchPosition = new Vector2(touchX, touchY);
 
+            // && GameObject.FindGameObjectsWithTag("Bomb").Length < 10
             if (touch.phase == TouchPhase.Began)
             {
                 Instantiate(bomb, touchPosition, transform.rotation);
             }
         }
-
+        
+        if (accelerationX != 0 && accelerationY != 0)
+        {
+            //transform.Rotate(new Vector3(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90));
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90)), smoothSpeed);
+        }
 
         touchX = Input.mousePosition.x;
         touchY = Input.mousePosition.y;
@@ -123,9 +156,8 @@ public class Player : MonoBehaviour
             Instantiate(bomb, touchPosition, transform.rotation);
         }
 
-        transform.Rotate(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90);
-        
-        if(GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
         {
             if(SceneManager.GetActiveScene().buildIndex < 3)
             {
