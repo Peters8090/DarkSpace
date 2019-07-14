@@ -5,28 +5,28 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     public float lifetime;
-    public float touchX;
-    public float touchY;
 
     void Start()
     {
-
+        gameObject.transform.SetParent(GameObject.Find("Canvas").transform);
     }
     void Update()
     {
-        gameObject.transform.SetParent(GameObject.Find("Canvas").transform);
-
         lifetime += Time.deltaTime;
+
         if (lifetime >= 0.65f)
         {
             Destroy(gameObject);
         }
-        foreach (Touch touch in Input.touches)
-        {
-            touchX = touch.position.x;
-            touchY = touch.position.y;
-        }
 
         transform.localScale = Vector3.one;
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "Bullet")
+        {
+            Destroy(coll.gameObject);
+        }
     }
 }

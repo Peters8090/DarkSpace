@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Ads : MonoBehaviour {
 
     public int previousScene;
-    /*
+
 	void Start () {
         Advertisement.Initialize("1665333");
 	}
@@ -34,5 +34,5 @@ public class Ads : MonoBehaviour {
                 break;
         }
 
-    }*/
+    }
 }
