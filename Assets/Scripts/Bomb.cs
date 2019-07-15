@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    public float lifetime;
+    public float timer;
 
     void Start()
     {
@@ -12,9 +12,9 @@ public class Bomb : MonoBehaviour
     }
     void Update()
     {
-        lifetime += Time.deltaTime;
+        timer += Time.deltaTime;
 
-        if (lifetime >= 0.65f)
+        if (timer >= 0.65f)
         {
             Destroy(gameObject);
         }
@@ -28,5 +28,7 @@ public class Bomb : MonoBehaviour
         {
             Destroy(coll.gameObject);
         }
+        else if (coll.gameObject.tag == "PlayPause")
+            Destroy(gameObject);
     }
 }

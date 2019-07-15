@@ -12,6 +12,9 @@ public class Bullet : MonoBehaviour
     /// </summary>
     float speedDivider = 250f;
 
+    float timer = 0f;
+    float lifetime = 5f;
+
     void Start()
     {
         control = GameObject.Find("GameControlObject").GetComponent<GameControlScript>();
@@ -19,12 +22,16 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+        timer += Time.deltaTime;
+        if (timer >= lifetime)
+            Destroy(gameObject);
+
         transform.SetParent(GameObject.Find("Canvas").transform);
 
-        if (GameObject.FindGameObjectsWithTag("Player").Length > 0)
+        if (GameObject.FindGameObjectsWithTag("Player").Length > 0 && Time.timeScale != 0)
         {
             transform.LookAt(GameObject.Find("Player").transform);
-            transform.Translate(transform.forward * Screen.width / speedDivider);
+            transform.Translate(transform.forward * Display.main.systemWidth / speedDivider);
             transform.localEulerAngles = new Vector3(0, 0, transform.localEulerAngles.z);
         }
         
@@ -36,7 +43,7 @@ public class Bullet : MonoBehaviour
         if (coll.gameObject.tag == "Player")
         {
             PlayerPrefs.SetString("previousScene", SceneManager.GetActiveScene().buildIndex.ToString());
-            GameObject.Find("Canvas").GetComponent<Lose>().enabled = true;
+            SceneManager.LoadScene("Lose");
 
             if(control != null)
                 control.gameOver = true;

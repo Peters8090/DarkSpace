@@ -11,10 +11,7 @@ public class Player : MonoBehaviour
     public Vector2 dir = Vector2.zero;
 
     private GameControlScript control;
-
-    public float touchX;
-    public float touchY;
-
+    
     public float accelerationX;
     public float accelerationY;
 
@@ -35,61 +32,35 @@ public class Player : MonoBehaviour
     void Start()
     {
         transform.eulerAngles = new Vector3(0, 0, 0);
-        speed = Screen.width / speedDivider;
+        speed = Display.main.systemWidth / speedDivider;
         control = GameObject.Find("GameControlObject").GetComponent<GameControlScript>();
     }
 
     void Update()
     {
-        if (Mathf.Abs(Input.acceleration.x) > 0 && Mathf.Abs(Input.acceleration.x) > 0.08f)
+        if (Mathf.Abs(Accelerometer.x) > 0 && Mathf.Abs(Accelerometer.x) > 0.08f)
         {
             timer = 0;
-            accelerationX = Input.acceleration.x * Time.deltaTime * Screen.width;
+            accelerationX = Accelerometer.x * Time.deltaTime * Display.main.systemWidth;
         }
         else
         {
             noMovement = true;
         }
 
-        if (Mathf.Abs(Input.acceleration.y) > 0 && Mathf.Abs(Input.acceleration.y) > 0.08f)
+        if (Mathf.Abs(Accelerometer.y) > 0 && Mathf.Abs(Accelerometer.y) > 0.08f)
         {
             timer = 0;
             noMovement = false;
-            accelerationY = Input.acceleration.y * Time.deltaTime * Screen.width;
+            accelerationY = Accelerometer.y * Time.deltaTime * Display.main.systemWidth;
         }
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            accelerationX = -speed;
-            accelerationY = 0;
-        }
-
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            accelerationX = speed;
-            accelerationY = 0;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            accelerationY = speed;
-            accelerationX = 0;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            accelerationY = -speed;
-            accelerationX = 0;
-        }
-       
+        
         if(noMovement)
         {
             timer += Time.deltaTime;
         }
 
-        if(timer > 0.5f)
+        if(timer > 0.5f || Time.timeScale == 0)
         {
             accelerationX = 0;
             accelerationY = 0;
@@ -100,60 +71,52 @@ public class Player : MonoBehaviour
             transform.localEulerAngles = Vector3.zero;
         }
 
-        if (transform.localPosition.x <= Screen.width / 2 && transform.localPosition.x >= -(Screen.width / 2) && transform.localPosition.y <= Screen.height / 2 && transform.localPosition.y >= -(Screen.height / 2))
+        if (transform.localPosition.x <= Display.main.systemWidth / 2 && transform.localPosition.x >= -(Display.main.systemWidth / 2) && transform.localPosition.y <= Display.main.systemHeight / 2 && transform.localPosition.y >= -(Display.main.systemHeight / 2))
         {
             transform.Translate(accelerationX, accelerationY, 0f);
-            //transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(accelerationX + transform.localPosition.x, accelerationY + transform.localPosition.y, 0f), smoothSpeed);
         }
 
-        else if (transform.localPosition.x < Screen.width / 2)
+        else if (transform.localPosition.x < Display.main.systemWidth / 2)
         {
             transform.Translate(1, 0, 0);
         }
 
-        else if (transform.localPosition.x > -(Screen.width / 2))
+        else if (transform.localPosition.x > -(Display.main.systemWidth / 2))
         {
             transform.Translate(-1, 0, 0);
         }
 
-        if (transform.localPosition.y > Screen.height / 2)
+        if (transform.localPosition.y > Display.main.systemHeight / 2)
         {
             transform.Translate(0, -1, 0);
         }
 
-        if (transform.localPosition.y < -(Screen.height / 2))
+        if (transform.localPosition.y < -(Display.main.systemHeight / 2))
         {
             transform.Translate(0, 1, 0);
         }
-
+        
         foreach (Touch touch in Input.touches)
         {
-            touchX = touch.position.x;
-            touchY = touch.position.y;
+            touchPosition = new Vector2(touch.position.x, touch.position.y);
 
-            touchPosition = new Vector2(touchX, touchY);
+            if (PlayPause.paused)
+                return;
 
-            // && GameObject.FindGameObjectsWithTag("Bomb").Length < 10
             if (touch.phase == TouchPhase.Began)
             {
                 Instantiate(bomb, touchPosition, transform.rotation);
             }
         }
-        
-        if (accelerationX != 0 && accelerationY != 0)
+
+        if (Input.GetButtonDown("Fire1") && Application.platform != RuntimePlatform.Android)
         {
-            //transform.Rotate(new Vector3(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90));
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90)), smoothSpeed);
+            Instantiate(bomb, new Vector2(Input.mousePosition.x, Input.mousePosition.y), transform.rotation);
         }
 
-        touchX = Input.mousePosition.x;
-        touchY = Input.mousePosition.y;
-
-        touchPosition = new Vector2(touchX, touchY);
-
-        if (Input.GetButtonDown("Fire1"))
+        if (accelerationX != 0 && accelerationY != 0)
         {
-            Instantiate(bomb, touchPosition, transform.rotation);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90)), smoothSpeed);
         }
 
 
