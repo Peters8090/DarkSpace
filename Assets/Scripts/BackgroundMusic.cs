@@ -5,17 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class BackgroundMusic : MonoBehaviour {
 
-	void Start () {
-		
-	}
-	
-	void Update () {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            Destroy(gameObject);
-        }
+    AudioSource audioSource;
 
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    void Update ()
+    {
         DontDestroyOnLoad(gameObject);
 
+        if (PlayPause.paused && audioSource.isPlaying)
+            audioSource.Pause();
+        else if (!PlayPause.paused && !audioSource.isPlaying)
+            audioSource.UnPause();
     }
 }
