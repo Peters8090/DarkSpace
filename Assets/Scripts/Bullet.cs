@@ -5,21 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
-
-    private GameControlScript control;
     /// <summary>
     /// When it gets lower, the bullet speed gets higher
     /// </summary>
-    float speedDivider = 250f;
+    float speedDivider = 450f;
 
     float timer = 0f;
     float lifetime = 5f;
-
-    void Start()
-    {
-        control = GameObject.Find("GameControlObject").GetComponent<GameControlScript>();
-    }
-
+    
     void Update()
     {
         timer += Time.deltaTime;
@@ -44,10 +37,7 @@ public class Bullet : MonoBehaviour
         {
             PlayerPrefs.SetString("previousScene", SceneManager.GetActiveScene().buildIndex.ToString());
             SceneManager.LoadScene("Lose");
-
-            if(control != null)
-                control.gameOver = true;
-
+            GameControlScript.gameOver = true;
             Destroy(coll.gameObject);
             Destroy(gameObject);
         }

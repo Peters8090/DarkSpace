@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4627933795462286929}
   m_Layer: 5
   m_Name: PlayPause
-  m_TagString: PlayPause
+  m_TagString: NoTouchArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4627933795462286923}
-  m_CullTransparentMesh: 0
+  m_CullTransparentMesh: 1
 --- !u!114 &4627933795462286934
 MonoBehaviour:
   m_ObjectHideFlags: 0
