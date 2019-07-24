@@ -5,25 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class GameControlScript : MonoBehaviour {
 
-    public float timer = 0f;
-    public bool gameOver;
+    public static float timer = 0f;
+    public static bool gameOver;
 
 	void Start () {
-        
-        if (SceneManager.GetActiveScene().buildIndex == 1)
+        if (SceneManager.GetActiveScene().name == "Level1")
         {
             gameOver = false;
+            timer = 0;
         }
     }
 	
 	void Update () {
-        if(SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            Destroy(gameObject);
-        }
-
-        DontDestroyOnLoad(gameObject);
-
         if(!gameOver)
         {
             timer += Time.deltaTime;

@@ -56,4 +56,10 @@ public class Enemy : MonoBehaviour {
             timer2 = 0;
         }
     }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "NoTouchArea")
+            transform.localPosition = new Vector2(Random.Range(-Display.main.systemWidth / 2, Display.main.systemWidth / 2), Random.Range(-Display.main.systemHeight / 2, Display.main.systemHeight / 2));
+    }
 }

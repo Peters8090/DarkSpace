@@ -37,7 +37,6 @@ public class PlayPause : MonoBehaviour
 
     void OnClick()
     {
-        Accelerometer.Calibrate();
         paused = !paused;
     }
 }

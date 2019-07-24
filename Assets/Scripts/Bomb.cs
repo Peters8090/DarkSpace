@@ -28,7 +28,7 @@ public class Bomb : MonoBehaviour
         {
             Destroy(coll.gameObject);
         }
-        else if (coll.gameObject.tag == "PlayPause")
+        else if (coll.gameObject.tag == "NoTouchArea")
             Destroy(gameObject);
     }
 }

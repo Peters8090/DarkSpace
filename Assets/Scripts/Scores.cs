@@ -9,9 +9,9 @@ public class Scores : MonoBehaviour {
     private float highscore;
     
 	void Update () {
-        timer = GameObject.Find("GameControlObject").GetComponent<GameControlScript>().timer;
+        timer = GameControlScript.timer;
         timer = Mathf.Round(timer * 100f) / 100f;
-        GetComponent<Text>().text = timer.ToString();
+        GetComponent<Text>().text = "SCORE: " + timer.ToString();
 
         if (!PlayerPrefs.HasKey("highscore"))
         {

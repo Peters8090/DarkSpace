@@ -12,88 +12,64 @@ public class Player : MonoBehaviour
 
     private GameControlScript control;
     
-    public float accelerationX;
-    public float accelerationY;
+    public float movementX;
+    public float movementY;
 
     /// <summary>
     /// When it gets lower, the player speed gets higher
     /// </summary>
-    float speedDivider = 400;
+    float speedDivider = 200;
 
     float speed = 12;
+    
+    FixedJoystick joystick;
 
-    float timer = 0;
-
-    Vector3 targetRot = Vector3.zero;
-
-    float smoothSpeed = 5f;
-
-    bool noMovement = false;
     void Start()
     {
         transform.eulerAngles = new Vector3(0, 0, 0);
         speed = Display.main.systemWidth / speedDivider;
-        control = GameObject.Find("GameControlObject").GetComponent<GameControlScript>();
+        joystick = FindObjectOfType<FixedJoystick>();
     }
 
     void Update()
     {
-        if (Mathf.Abs(Accelerometer.x) > 0 && Mathf.Abs(Accelerometer.x) > 0.08f)
+        if (Time.timeScale != 0)
         {
-            timer = 0;
-            accelerationX = Accelerometer.x * Time.deltaTime * Display.main.systemWidth;
-        }
-        else
-        {
-            noMovement = true;
-        }
-
-        if (Mathf.Abs(Accelerometer.y) > 0 && Mathf.Abs(Accelerometer.y) > 0.08f)
-        {
-            timer = 0;
-            noMovement = false;
-            accelerationY = Accelerometer.y * Time.deltaTime * Display.main.systemWidth;
+            movementX = joystick.Horizontal * speed;
+            movementY = joystick.Vertical * speed;
         }
         
-        if(noMovement)
-        {
-            timer += Time.deltaTime;
-        }
-
-        if(timer > 0.5f || Time.timeScale == 0)
-        {
-            accelerationX = 0;
-            accelerationY = 0;
-        }
-
-        if (accelerationX != 0 && accelerationY != 0)
+        if (movementX != 0 && movementY != 0)
         {
             transform.localEulerAngles = Vector3.zero;
         }
 
-        if (transform.localPosition.x <= Display.main.systemWidth / 2 && transform.localPosition.x >= -(Display.main.systemWidth / 2) && transform.localPosition.y <= Display.main.systemHeight / 2 && transform.localPosition.y >= -(Display.main.systemHeight / 2))
+        if(Time.timeScale != 0)
         {
-            transform.Translate(accelerationX, accelerationY, 0f);
-        }
+            if (transform.localPosition.x <= Display.main.systemWidth / 2 && transform.localPosition.x >= -(Display.main.systemWidth / 2) && transform.localPosition.y <= Display.main.systemHeight / 2 && transform.localPosition.y >= -(Display.main.systemHeight / 2))
+            {
+                transform.Translate(movementX, movementY, 0f);
+            }
 
-        else if (transform.localPosition.x < Display.main.systemWidth / 2)
-        {
-            transform.Translate(1, 0, 0);
-        }
+            else if (transform.localPosition.x < Display.main.systemWidth / 2)
+            {
+                transform.Translate(1, 0, 0);
+            }
 
-        else if (transform.localPosition.x > -(Display.main.systemWidth / 2))
-        {
-            transform.Translate(-1, 0, 0);
-        }
+            else if (transform.localPosition.x > -(Display.main.systemWidth / 2))
+            {
+                transform.Translate(-1, 0, 0);
+            }
 
-        if (transform.localPosition.y > Display.main.systemHeight / 2)
-        {
-            transform.Translate(0, -1, 0);
-        }
+            if (transform.localPosition.y > Display.main.systemHeight / 2)
+            {
+                transform.Translate(0, -1, 0);
+            }
 
-        if (transform.localPosition.y < -(Display.main.systemHeight / 2))
-        {
-            transform.Translate(0, 1, 0);
+            if (transform.localPosition.y < -(Display.main.systemHeight / 2))
+            {
+                transform.Translate(0, 1, 0);
+            }
         }
         
         foreach (Touch touch in Input.touches)
@@ -103,20 +79,20 @@ public class Player : MonoBehaviour
             if (PlayPause.paused)
                 return;
 
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && Time.timeScale != 0)
             {
                 Instantiate(bomb, touchPosition, transform.rotation);
             }
         }
 
-        if (Input.GetButtonDown("Fire1") && Application.platform != RuntimePlatform.Android)
+        if (Input.GetButtonDown("Fire1") && Application.platform != RuntimePlatform.Android && Time.timeScale != 0)
         {
             Instantiate(bomb, new Vector2(Input.mousePosition.x, Input.mousePosition.y), transform.rotation);
         }
 
-        if (accelerationX != 0 && accelerationY != 0)
+        if (movementX != 0 && movementY != 0)
         {
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(accelerationY, accelerationX) * Mathf.Rad2Deg - 90)), smoothSpeed);
+            transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(movementY, movementX) * Mathf.Rad2Deg - 90);
         }
 
 
@@ -127,7 +103,7 @@ public class Player : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             } else if (SceneManager.GetActiveScene().buildIndex == 3)
             {
-                control.gameOver = true;
+                GameControlScript.gameOver = true;
                 SceneManager.LoadScene(4);
             }
 
