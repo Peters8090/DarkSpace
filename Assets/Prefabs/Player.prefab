@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 222604501138333820}
   - component: {fileID: 114940727193749990}
   - component: {fileID: 114304021153884900}
-  - component: {fileID: 50062929967299440}
-  - component: {fileID: 1410174771}
+  - component: {fileID: 700755896578255685}
   m_Layer: 5
   m_Name: Player
   m_TagString: Player
@@ -95,29 +94,8 @@ MonoBehaviour:
   dir: {x: 0, y: 0}
   movementX: 0
   movementY: 0
---- !u!50 &50062929967299440
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1201648240194224}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!61 &1410174771
-BoxCollider2D:
+--- !u!68 &700755896578255685
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -130,15 +108,27 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+  m_Points:
+  - {x: 11.479248, y: -82.5742}
+  - {x: -22.568848, y: -75.5186}
+  - {x: -35.67224, y: -59.755188}
+  - {x: -98.407196, y: -76.68906}
+  - {x: -97.3699, y: -53.768555}
+  - {x: -63.009155, y: -22.911438}
+  - {x: -88.86832, y: -15.100662}
+  - {x: -86.62308, y: -1.2712555}
+  - {x: -31.80075, y: 10.064209}
+  - {x: -29.54068, y: 42.92569}
+  - {x: 10.400848, y: 140.5394}
+  - {x: 49.562622, y: 42.421967}
+  - {x: 48.947845, y: 10.460724}
+  - {x: 107.41562, y: 1.8027649}
+  - {x: 110.17676, y: -14.607605}
+  - {x: 81.85455, y: -24.217575}
+  - {x: 114.94968, y: -48.97545}
+  - {x: 117.67941, y: -75.38031}
+  - {x: 50.58957, y: -56.78087}
+  - {x: 49.132324, y: -67.51259}
+  - {x: 39.280334, y: -80.83809}
+  - {x: 10.503479, y: -82.40982}
