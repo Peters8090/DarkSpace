@@ -5,30 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class Bullet : MonoBehaviour
 {
-    /// <summary>
-    /// When it gets lower, the bullet speed gets higher
-    /// </summary>
-    float speedDivider = 450f;
+    float speed = 15;
 
     float timer = 0f;
     float lifetime = 5f;
-    
+
+    void Start()
+    {
+        transform.SetParent(GameObject.Find("Canvas").transform);
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
         if (timer >= lifetime)
             Destroy(gameObject);
+        
+        transform.localScale = Vector3.one;
+    }
 
-        transform.SetParent(GameObject.Find("Canvas").transform);
-
+    void FixedUpdate()
+    {
         if (GameObject.FindGameObjectsWithTag("Player").Length > 0 && Time.timeScale != 0)
         {
             transform.LookAt(GameObject.Find("Player").transform);
-            transform.Translate(transform.forward * Display.main.systemWidth / speedDivider);
+            transform.Translate(transform.forward * speed);
             transform.localEulerAngles = new Vector3(0, 0, transform.localEulerAngles.z);
         }
-        
-        transform.localScale = Vector3.one;
     }
 
     void OnCollisionEnter2D(Collision2D coll)

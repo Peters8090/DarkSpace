@@ -6,7 +6,7 @@ public class BackgroundImg : MonoBehaviour
 {
     float rotation = 10;
     
-    void Update()
+    void FixedUpdate()
     {
         transform.Rotate(new Vector3(0, 0, rotation * Time.timeScale));
     }

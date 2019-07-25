@@ -6,39 +6,72 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     public GameObject bomb;
-
-    public Vector2 touchPosition;
-    public Vector2 dir = Vector2.zero;
-
-    private GameControlScript control;
     
-    public float movementX;
-    public float movementY;
+    /// <summary>
+    /// Current X movement speed
+    /// </summary>
+    float movementX;
 
     /// <summary>
-    /// When it gets lower, the player speed gets higher
+    /// Current Y movement speed
     /// </summary>
-    float speedDivider = 200;
+    float movementY;
 
-    float speed = 12;
+    float speed = 20;
     
     FixedJoystick joystick;
 
     void Start()
     {
         transform.eulerAngles = new Vector3(0, 0, 0);
-        speed = Display.main.systemWidth / speedDivider;
         joystick = FindObjectOfType<FixedJoystick>();
     }
 
     void Update()
+    {
+        /*
+        foreach (Touch touch in Input.touches)
+        {
+            touchPosition = new Vector2(touch.position.x, touch.position.y);
+
+            if (PlayPause.paused)
+                return;
+
+            if (touch.phase == TouchPhase.Began && Time.timeScale != 0)
+            {
+                Instantiate(bomb, touchPosition, transform.rotation);
+            }
+        }*/
+
+        //to make the game more difficult
+        if (Input.GetButtonDown("Fire1") /*&& Application.platform != RuntimePlatform.Android */&& Time.timeScale != 0)
+        {
+            Instantiate(bomb, new Vector2(Input.mousePosition.x, Input.mousePosition.y), transform.rotation);
+        }
+
+        //if there are no enemies
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+        {
+            if (SceneManager.GetActiveScene().buildIndex < 3)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+            else if (SceneManager.GetActiveScene().name == "Level3")
+            {
+                GameControlScript.gameOver = true;
+                SceneManager.LoadScene(4);
+            }
+        }
+    }
+
+    void FixedUpdate()
     {
         if (Time.timeScale != 0)
         {
             movementX = joystick.Horizontal * speed;
             movementY = joystick.Vertical * speed;
         }
-        
+        //reset rotation before transform.Translate
         if (movementX != 0 && movementY != 0)
         {
             transform.localEulerAngles = Vector3.zero;
@@ -51,6 +84,7 @@ public class Player : MonoBehaviour
                 transform.Translate(movementX, movementY, 0f);
             }
 
+            //player cannot fly out of the screen
             else if (transform.localPosition.x < Display.main.systemWidth / 2)
             {
                 transform.Translate(1, 0, 0);
@@ -71,42 +105,10 @@ public class Player : MonoBehaviour
                 transform.Translate(0, 1, 0);
             }
         }
-        
-        foreach (Touch touch in Input.touches)
-        {
-            touchPosition = new Vector2(touch.position.x, touch.position.y);
-
-            if (PlayPause.paused)
-                return;
-
-            if (touch.phase == TouchPhase.Began && Time.timeScale != 0)
-            {
-                Instantiate(bomb, touchPosition, transform.rotation);
-            }
-        }
-
-        if (Input.GetButtonDown("Fire1") && Application.platform != RuntimePlatform.Android && Time.timeScale != 0)
-        {
-            Instantiate(bomb, new Vector2(Input.mousePosition.x, Input.mousePosition.y), transform.rotation);
-        }
 
         if (movementX != 0 && movementY != 0)
         {
             transform.localEulerAngles = new Vector3(0, 0, Mathf.Atan2(movementY, movementX) * Mathf.Rad2Deg - 90);
-        }
-
-
-        if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
-        {
-            if(SceneManager.GetActiveScene().buildIndex < 3)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            } else if (SceneManager.GetActiveScene().buildIndex == 3)
-            {
-                GameControlScript.gameOver = true;
-                SceneManager.LoadScene(4);
-            }
-
         }
     }
 }
