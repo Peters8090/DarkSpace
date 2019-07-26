@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BackgroundImg : MonoBehaviour
 {
-    float rotation = 10;
+    float rotation = 5;
     
     void FixedUpdate()
     {
