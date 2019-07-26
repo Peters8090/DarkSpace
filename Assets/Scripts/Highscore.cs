@@ -16,5 +16,10 @@ public class Highscore : MonoBehaviour {
             myText.text = PlayerPrefs.GetFloat("highscore", 0).ToString();
         else
             myText.text = "NaN";
-	}
+    }
+
+    public void ResetHighscore()
+    {
+        PlayerPrefs.DeleteKey("highscore");
+    }
 }

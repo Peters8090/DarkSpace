@@ -169,7 +169,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1203429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 205a3556fe63f784d952df5d868bd626, type: 3}
+  m_Script: {fileID: 11500000, guid: 098a0563d6e756b4da95945cae993a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1203432
@@ -216,7 +216,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1203431}
-        m_MethodName: OnButtonClick
+        m_MethodName: ChangeToScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -278,9 +278,8 @@ GameObject:
   - component: {fileID: 200527463}
   - component: {fileID: 200527462}
   - component: {fileID: 200527461}
-  - component: {fileID: 200527460}
   m_Layer: 5
-  m_Name: Reset
+  m_Name: ResetHighscore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,18 +305,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 300.00003}
   m_SizeDelta: {x: 125, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &200527460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 200527458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f16ba5de689314346b98a699687ecaaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &200527461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,8 +348,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 200527460}
-        m_MethodName: OnButtonClick
+      - m_Target: {fileID: 851791055}
+        m_MethodName: ResetHighscore
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -425,7 +412,7 @@ GameObject:
   - component: {fileID: 851791053}
   - component: {fileID: 851791055}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: Highscore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -516,7 +503,7 @@ GameObject:
   - component: {fileID: 1190682937}
   - component: {fileID: 1190682936}
   m_Layer: 5
-  m_Name: Text
+  m_Name: YourHighscoreIs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

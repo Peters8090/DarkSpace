@@ -12,13 +12,10 @@ public class Ads : MonoBehaviour {
         Advertisement.Initialize("1665333");
 	}
 
-	void Update () {
-		
-	}
-
     public void OnButtonClick()
     {
-        Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
+        if(Advertisement.IsReady())
+            Advertisement.Show("rewardedVideo", new ShowOptions() { resultCallback = HandleAdResult });
     }
 
     private void HandleAdResult(ShowResult result)
@@ -26,7 +23,6 @@ public class Ads : MonoBehaviour {
         switch (result)
         {
             case ShowResult.Finished:
-
                 int.TryParse(PlayerPrefs.GetString("previousScene"), out previousScene);
 
                 SceneManager.LoadScene(previousScene);

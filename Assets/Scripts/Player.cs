@@ -29,22 +29,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        /*
-        foreach (Touch touch in Input.touches)
-        {
-            touchPosition = new Vector2(touch.position.x, touch.position.y);
-
-            if (PlayPause.paused)
-                return;
-
-            if (touch.phase == TouchPhase.Began && Time.timeScale != 0)
-            {
-                Instantiate(bomb, touchPosition, transform.rotation);
-            }
-        }*/
-
-        //to make the game more difficult
-        if (Input.GetButtonDown("Fire1") /*&& Application.platform != RuntimePlatform.Android */&& Time.timeScale != 0)
+        //only one touch can be detected in one frame, it makes the game more difficult
+        if (Input.GetButtonDown("Fire1") && Time.timeScale != 0)
         {
             Instantiate(bomb, new Vector2(Input.mousePosition.x, Input.mousePosition.y), transform.rotation);
         }
@@ -79,7 +65,10 @@ public class Player : MonoBehaviour
 
         if(Time.timeScale != 0)
         {
-            if (transform.localPosition.x <= Display.main.systemWidth / 2 && transform.localPosition.x >= -(Display.main.systemWidth / 2) && transform.localPosition.y <= Display.main.systemHeight / 2 && transform.localPosition.y >= -(Display.main.systemHeight / 2))
+            if (transform.localPosition.x < Display.main.systemWidth / 2 && //right
+                transform.localPosition.x > -(Display.main.systemWidth / 2) && //left
+                transform.localPosition.y < Display.main.systemHeight / 2 &&  //top
+                transform.localPosition.y > -(Display.main.systemHeight / 2)) //bottom
             {
                 transform.Translate(movementX, movementY, 0f);
             }
